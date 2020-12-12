@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package modbus_device;
+
+enum ErrorCode{
+  NORMAL = 0;  //正常
+  TIMEOUT = 1; //modbus485通讯超时
+}
+
+service Device{
+  //读取保持寄存器(0x03命令)
+  rpc ReadHoldingRegisters(ReadHoldingRegistersRequest) returns (ReadHoldingRegistersResponse){}
+  //写多个保持寄存器(0x10命令)
+  rpc WriteMultipleRegisters(WriteMultipleRegistersRequest) returns (WriteMultipleRegistersResponse){}
+}
+
+//读取多个保持寄存器(0x03命令)请求
+message ReadHoldingRegistersRequest{
+  uint32 slave_id=1;
+  uint32 address=2;
+  uint32 num=3;
+}
+//读取多个保持寄存器(0x03命令)响应
+message ReadHoldingRegistersResponse{
+  ErrorCode err_code=1;
+  bytes results=2;
+}
+
+//写多个保持寄存器(0x10命令)请求
+message WriteMultipleRegistersRequest{
+  uint32 slave_id=1;
+  uint32 address=2;
+  uint32 num=3;
+}
+//写取多个保持寄存器(0x10命令)响应
+message WriteMultipleRegistersResponse{
+  ErrorCode err_code=1;
+  bytes results=2;
+}
