@@ -1,8 +1,13 @@
-APP=test
+APP=modbustest
 
 protoc:
+	protoc --go_out=plugins=grpc:.  proto/modbusdevice.proto
 
-	protoc --go_out=plugins=grpc:.  /protoc/modbusse
-
+run:
+	go run cmd/cmd.go
+test:
+	go run cmd/test.go
 clean:
 	rm -f ${APP}
+
+

@@ -31,9 +31,9 @@ message WriteMultipleRegistersRequest{
   uint32 slave_id=1;
   uint32 address=2;
   uint32 num=3;
+  bytes  value=4;
 }
 //写取多个保持寄存器(0x10命令)响应
 message WriteMultipleRegistersResponse{
   ErrorCode err_code=1;
-  bytes results=2;
 }
