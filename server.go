@@ -3,6 +3,8 @@ package modbus_device
 import (
 	"context"
 	modbus "github.com/goburrow/modbus"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	pb "sa_system/modbus_device/proto"
 	"sync"
@@ -36,11 +38,13 @@ func (s *Server) ReadHoldingRegisters(ctx context.Context, in *pb.ReadHoldingReg
 	if err!=nil{
 		log.Println("ReadHoldingRegisters err:",err)
 		res.ErrCode= pb.ErrorCode_TIMEOUT
+		res.ErrCode= pb.ErrorCode_TIMEOUT
+		return nil,status.Error(codes.Unknown,err.Error())
 	}else{
 		res.ErrCode=pb.ErrorCode_NORMAL
 		res.Results=results
+		return &res,nil
 	}
-	return &res,nil
 }
 
 func (s *Server) WriteMultipleRegisters(ctx context.Context, in *pb.WriteMultipleRegistersRequest) (*pb.WriteMultipleRegistersResponse, error){
@@ -58,8 +62,10 @@ func (s *Server) WriteMultipleRegisters(ctx context.Context, in *pb.WriteMultipl
 	if err!=nil{
 		log.Println("WriteMultipleRegisters err:",err)
 		res.ErrCode= pb.ErrorCode_TIMEOUT
+		return nil,status.Error(codes.Unknown,err.Error())
 	}else{
 		res.ErrCode=pb.ErrorCode_NORMAL
+		return &res,nil
 	}
-	return &res,nil
+
 }
